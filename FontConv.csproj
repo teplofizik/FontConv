@@ -53,6 +53,9 @@
       <DependentUpon>fMain.cs</DependentUpon>
     </Compile>
     <Compile Include="FontToC.cs" />
+    <Compile Include="FontToC2.cs" />
+    <Compile Include="Glyph.cs" />
+    <Compile Include="GlyphSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="fMain.resx">

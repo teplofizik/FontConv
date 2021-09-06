@@ -16,6 +16,9 @@ namespace FontConv
         List<byte> _Data;   // data array
         List<int> _Index;   // data index
 
+        List<int> _Before;  // before index
+        List<int> _After;   // after index
+
         int _Left;
         int _Right;
 
@@ -31,6 +34,8 @@ namespace FontConv
         {
             _Data = new List<byte>();
             _Index = new List<int>();
+            _Before = new List<int>();
+            _After = new List<int>();
             _Font = new Font("Times New Roman", 10);
 
             Blocks.Clear();
@@ -121,6 +126,8 @@ namespace FontConv
         {
             _Data.Clear();
             _Index.Clear();
+            _Before.Clear();
+            _After.Clear();
 
             int num_width = 0;
 
@@ -159,6 +166,8 @@ namespace FontConv
         {
             _Data.Clear();
             _Index.Clear();
+            _Before.Clear();
+            _After.Clear();
 
             _Index.Add(0);
 
@@ -514,6 +523,9 @@ namespace FontConv
             int LastOffset = _Data.Count;
             _Index.Add(_Data.Count);
 
+            _Before.Add(lines_bef);
+            _After.Add(lines_aft);
+
             _Data.Add(Convert.ToByte(_w));   // w
             _Data.Add(Convert.ToByte(h - lines_aft - lines_bef));   // h
             _Data.Add(Convert.ToByte((lines_bef & 0x0F) + ((lines_aft << 4) & 0xF0))); // How many lines skip before textout
@@ -567,6 +579,7 @@ namespace FontConv
             {
                 _Data.Add(temp);
             }
+
             Blocks.Add(new CharBlock(symb, LastOffset, _Data.Count - LastOffset));
 
             if (_TempFolder != "")

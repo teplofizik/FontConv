@@ -45,6 +45,10 @@
             this.lName = new System.Windows.Forms.Label();
             this.ck2Bit = new System.Windows.Forms.CheckBox();
             this.ckImages = new System.Windows.Forms.CheckBox();
+            this.lSize = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.bUpdate = new System.Windows.Forms.Button();
+            this.ckDrop = new System.Windows.Forms.CheckBox();
             this.gChars.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +76,7 @@
             this.chRusLittle.TabIndex = 5;
             this.chRusLittle.Text = "Русские прописные";
             this.chRusLittle.UseVisualStyleBackColor = true;
+            this.chRusLittle.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chRusBig
             // 
@@ -82,6 +87,7 @@
             this.chRusBig.TabIndex = 4;
             this.chRusBig.Text = "Русские заглавные";
             this.chRusBig.UseVisualStyleBackColor = true;
+            this.chRusBig.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chLatinLittle
             // 
@@ -92,6 +98,7 @@
             this.chLatinLittle.TabIndex = 3;
             this.chLatinLittle.Text = "Латинские прописные";
             this.chLatinLittle.UseVisualStyleBackColor = true;
+            this.chLatinLittle.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chLatinBig
             // 
@@ -102,6 +109,7 @@
             this.chLatinBig.TabIndex = 2;
             this.chLatinBig.Text = "Латинские заглавные";
             this.chLatinBig.UseVisualStyleBackColor = true;
+            this.chLatinBig.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chSpecial
             // 
@@ -114,6 +122,7 @@
             this.chSpecial.TabIndex = 1;
             this.chSpecial.Text = "Знаки препинания";
             this.chSpecial.UseVisualStyleBackColor = true;
+            this.chSpecial.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chNumbers
             // 
@@ -126,6 +135,7 @@
             this.chNumbers.TabIndex = 0;
             this.chNumbers.Text = "Цифры";
             this.chNumbers.UseVisualStyleBackColor = true;
+            this.chNumbers.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // chAll
             // 
@@ -136,7 +146,7 @@
             this.chAll.TabIndex = 6;
             this.chAll.Text = "Все";
             this.chAll.UseVisualStyleBackColor = true;
-            this.chAll.CheckedChanged += new System.EventHandler(this.chAll_CheckedChanged);
+            this.chAll.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // dlSave
             // 
@@ -149,7 +159,7 @@
             // 
             this.bFont.Location = new System.Drawing.Point(235, 12);
             this.bFont.Name = "bFont";
-            this.bFont.Size = new System.Drawing.Size(91, 23);
+            this.bFont.Size = new System.Drawing.Size(113, 23);
             this.bFont.TabIndex = 1;
             this.bFont.Text = "Шрифт...";
             this.bFont.UseVisualStyleBackColor = true;
@@ -157,9 +167,10 @@
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(235, 41);
+            this.bSave.Enabled = false;
+            this.bSave.Location = new System.Drawing.Point(235, 71);
             this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(91, 23);
+            this.bSave.Size = new System.Drawing.Size(113, 23);
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Сохранить...";
             this.bSave.UseVisualStyleBackColor = true;
@@ -169,14 +180,15 @@
             // 
             this.lSample.Location = new System.Drawing.Point(12, 197);
             this.lSample.Name = "lSample";
-            this.lSample.Size = new System.Drawing.Size(314, 55);
+            this.lSample.Size = new System.Drawing.Size(336, 118);
             this.lSample.TabIndex = 3;
             this.lSample.Text = "Sample";
             this.lSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tName
             // 
-            this.tName.Location = new System.Drawing.Point(226, 174);
+            this.tName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tName.Location = new System.Drawing.Point(252, 173);
             this.tName.Name = "tName";
             this.tName.Size = new System.Drawing.Size(100, 20);
             this.tName.TabIndex = 7;
@@ -185,7 +197,7 @@
             // 
             this.lName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lName.AutoSize = true;
-            this.lName.Location = new System.Drawing.Point(160, 176);
+            this.lName.Location = new System.Drawing.Point(186, 176);
             this.lName.Name = "lName";
             this.lName.Size = new System.Drawing.Size(60, 13);
             this.lName.TabIndex = 8;
@@ -196,28 +208,71 @@
             this.ck2Bit.AutoSize = true;
             this.ck2Bit.Checked = true;
             this.ck2Bit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ck2Bit.Location = new System.Drawing.Point(241, 70);
+            this.ck2Bit.Location = new System.Drawing.Point(241, 100);
             this.ck2Bit.Name = "ck2Bit";
             this.ck2Bit.Size = new System.Drawing.Size(81, 17);
             this.ck2Bit.TabIndex = 9;
             this.ck2Bit.Text = "2 бита/пкс";
             this.ck2Bit.UseVisualStyleBackColor = true;
+            this.ck2Bit.CheckedChanged += new System.EventHandler(this.chNumbers_CheckedChanged);
             // 
             // ckImages
             // 
             this.ckImages.AutoSize = true;
-            this.ckImages.Location = new System.Drawing.Point(241, 93);
+            this.ckImages.Location = new System.Drawing.Point(241, 138);
             this.ckImages.Name = "ckImages";
             this.ckImages.Size = new System.Drawing.Size(74, 17);
             this.ckImages.TabIndex = 10;
             this.ckImages.Text = "Картинки";
             this.ckImages.UseVisualStyleBackColor = true;
             // 
+            // lSize
+            // 
+            this.lSize.AutoSize = true;
+            this.lSize.Location = new System.Drawing.Point(271, 158);
+            this.lSize.Name = "lSize";
+            this.lSize.Size = new System.Drawing.Size(10, 13);
+            this.lSize.TabIndex = 11;
+            this.lSize.Text = "-";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(216, 158);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Размер:";
+            // 
+            // bUpdate
+            // 
+            this.bUpdate.Location = new System.Drawing.Point(235, 42);
+            this.bUpdate.Name = "bUpdate";
+            this.bUpdate.Size = new System.Drawing.Size(113, 23);
+            this.bUpdate.TabIndex = 13;
+            this.bUpdate.Text = "Подготовить";
+            this.bUpdate.UseVisualStyleBackColor = true;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
+            // 
+            // ckDrop
+            // 
+            this.ckDrop.AutoSize = true;
+            this.ckDrop.Location = new System.Drawing.Point(241, 119);
+            this.ckDrop.Name = "ckDrop";
+            this.ckDrop.Size = new System.Drawing.Size(125, 17);
+            this.ckDrop.TabIndex = 14;
+            this.ckDrop.Text = "Убрать не влезшее";
+            this.ckDrop.UseVisualStyleBackColor = true;
+            // 
             // fMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(338, 261);
+            this.ClientSize = new System.Drawing.Size(364, 324);
+            this.Controls.Add(this.ckDrop);
+            this.Controls.Add(this.bUpdate);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lSize);
             this.Controls.Add(this.ckImages);
             this.Controls.Add(this.ck2Bit);
             this.Controls.Add(this.lName);
@@ -259,6 +314,10 @@
         private System.Windows.Forms.Label lName;
         private System.Windows.Forms.CheckBox ck2Bit;
         private System.Windows.Forms.CheckBox ckImages;
+        private System.Windows.Forms.Label lSize;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button bUpdate;
+        private System.Windows.Forms.CheckBox ckDrop;
     }
 }
 

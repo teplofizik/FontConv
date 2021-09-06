@@ -12,11 +12,15 @@ namespace FontConv
 {
     public partial class fMain : Form
     {
+        FontToC2 ftc2 = null;
+
         public fMain()
         {
             InitializeComponent();
 
             dlSave.InitialDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            bUpdate.PerformClick();
         }
 
         private void bFont_Click(object sender, EventArgs e)
@@ -25,6 +29,7 @@ namespace FontConv
             if (dlFont.ShowDialog() == DialogResult.Cancel) return;
 
             lSample.Font = dlFont.Font;
+            ResetGeneratedFont();
 
             if (FontSize != dlFont.Font.Size) dlSave.FileName = "";
         }
@@ -47,19 +52,20 @@ namespace FontConv
 
         }
 
-        private void bSave_Click(object sender, EventArgs e)
+        private void ResetGeneratedFont()
         {
-            dlSave.Filter = "Заголовочные файлы C (*.h)|*.h|Любые файлы (*.*)|*.*";
-            dlSave.Title = "Сохранить код";
-            if (dlSave.FileName.CompareTo("") == 0)
-                dlSave.FileName = GetFontName() + ".h";
-            else
-                dlSave.FileName = Path.GetFileName(dlSave.FileName);
-            if (dlSave.ShowDialog() == DialogResult.Cancel) return;
+            ftc2 = null;
+            bSave.Enabled = false;
 
-            FontToC ftc = new FontToC();
-            ftc.SelectedFont = dlFont.Font;
-            if(ckImages.Checked) ftc.TempFolder = "img//";
+            lSize.Text = $"-";
+            lSize.ForeColor = Color.Black;
+        }
+
+        private void UpdateFont()
+        {
+            ftc2 = new FontToC2();
+
+            ftc2.SelectedFont = dlFont.Font;
 
             string sym = " ";
             {
@@ -73,25 +79,69 @@ namespace FontConv
                 if (chRusLittle.Checked) sym += "абвгдеёжзийклмнопрстуфхцчшщъыьэжюя";
             }
 
-            ftc.TwoBitMode = ck2Bit.Checked;
-            ftc.Left = 1;
-            ftc.Right = 1;
+            //  ftc.TwoBitMode = ck2Bit.Checked;
+            //  ftc.Left = 1;
+            //  ftc.Right = 1;
+            ftc2.TwoBitMode = ck2Bit.Checked;
+            ftc2.DropExternal = ckDrop.Checked;
+            ftc2.Left = 1;
+            ftc2.Right = 1;
             if (chAll.Checked)
             {
-                ftc.ConvertAll();
+                // ftc.ConvertAll();
+                ftc2.ConvertAll();
             }
             else
             {
-                ftc.ConvertString(sym);
+                //ftc.ConvertString(sym);
+                ftc2.ConvertString(sym);
             }
-            ftc._Test();
-            ftc.SaveFile(dlSave.FileName, string.Format("f{0:d}", GetFontName()));
+
+            lSize.Text = $"{ftc2.FontSize}";
+            lSize.ForeColor = (ftc2.FontSize > 0xFFFF) ? Color.Red : Color.Black;
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            dlSave.Filter = "Заголовочные файлы C (*.h)|*.h|Любые файлы (*.*)|*.*";
+            dlSave.Title = "Сохранить код";
+            if (dlSave.FileName.CompareTo("") == 0)
+                dlSave.FileName = GetFontName() + ".h";
+            else
+                dlSave.FileName = Path.GetFileName(dlSave.FileName);
+            if (dlSave.ShowDialog() == DialogResult.Cancel) return;
+
+            //  FontToC ftc = new FontToC();
+            //  ftc.SelectedFont = dlFont.Font;
+            //  if (ckImages.Checked) ftc.TempFolder = "img//";
+            if (ckImages.Checked)
+            {
+                ftc2.TempFolder = "img//";
+
+                ftc2._Test();
+            }
+            //ftc.SaveFile(dlSave.FileName, string.Format("f{0:d}", GetFontName()));
+
+            ftc2.SaveFile(dlSave.FileName, string.Format("f{0:d}", GetFontName()));
+
             Text = "Font Converter - готово.";
         }
 
         private void fMain_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void chNumbers_CheckedChanged(object sender, EventArgs e)
+        {
+            ResetGeneratedFont();
+        }
+
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateFont();
+
+            bSave.Enabled = (ftc2 != null) && (ftc2.FontSize < 0x10000);
         }
     }
 }
