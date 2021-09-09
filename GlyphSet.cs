@@ -36,7 +36,7 @@ namespace FontConv
 
             var Res = new InternalFontData();
             Res.TwoBit = TwoBit;
-            Res.MaxHeight = MaxHeight;
+            Res.MaxHeight = MaxHeight - MinBefore - MinAfter;
 
             for (int i = 0; i < 256; i++)
             {

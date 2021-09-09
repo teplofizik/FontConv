@@ -88,14 +88,14 @@ namespace FontConv
             int num_width = 0;
 
             for (int i = '0'; i <= '9'; i++) // numbers
-                num_width = Math.Max(Convert.ToInt32(GetSymbolSize(i).Width), num_width);
+                num_width = Math.Max(Convert.ToInt32(GetSymbolSize(i, true).Width), num_width);
 
             return num_width;
         }
 
-        private SizeF GetSymbolSize(int Symb) => Glyph.GetSymbolSize(_Font, Convert.ToByte(Symb), _Left, _Right, false);
+        private SizeF GetSymbolSize(int Symb, bool Truncate = false) => Glyph.GetSymbolSize(_Font, Convert.ToByte(Symb), _Left, _Right, Truncate);
 
-        private RectangleF GetSymbolRect(int Symb) => Glyph.GetSymbolRect(_Font, Convert.ToByte(Symb), _Left, _Right, false);
+        private RectangleF GetSymbolRect(int Symb, bool Truncate = false) => Glyph.GetSymbolRect(_Font, Convert.ToByte(Symb), _Left, _Right, Truncate);
 
         public void ConvertString(string Text)
         {
@@ -217,23 +217,23 @@ namespace FontConv
 
             string _text = "";
 
-            _text += "// Font data for graphical project \r\n";
-            _text += "// use: SetFont(<index>, &" + fontname + "); \r\n\r\n";
-            _text += "// use: SetFont(<index>, " +
-                     string.Format("(uint8_t *){0:s}_index, (uint8_t *){0:s}_data, {1:s}_CHAR_COUNT, {1:s}_MAX_HEIGHT",
-                                   fontname,
-                                   fontname.ToUpper()) + "); \r\n\r\n";
+            //_text += "// Font data for graphical project \r\n";
+            //_text += "// use: SetFont(<index>, &" + fontname + "); \r\n\r\n";
+            //_text += "// use: SetFont(<index>, " +
+            //         string.Format("(uint8_t *){0:s}_index, (uint8_t *){0:s}_data, {1:s}_CHAR_COUNT, {1:s}_MAX_HEIGHT",
+            //                       fontname,
+            //                       fontname.ToUpper()) + "); \r\n\r\n";
 
             _text += "#include <stdint.h>\r\n";
 
-            _text += "// Count of characters in a font \r\n";
-            _text += "#define " + fontname.ToUpper() + "_CHAR_COUNT\t" +
-                     Convert.ToString(FontData.Indexes.Length) + "\r\n";
-            _text += "// Max height of characters in a font \r\n";
-            _text += "#define " + fontname.ToUpper() + "_MAX_HEIGHT\t" +
-                     Convert.ToString(FontData.MaxHeight) + "\r\n\r\n";
+            //_text += "// Count of characters in a font \r\n";
+            //_text += "#define " + fontname.ToUpper() + "_CHAR_COUNT\t" +
+            //         Convert.ToString(FontData.Indexes.Length) + "\r\n";
+            //_text += "// Max height of characters in a font \r\n";
+            //_text += "#define " + fontname.ToUpper() + "_MAX_HEIGHT\t" +
+            //         Convert.ToString(FontData.MaxHeight) + "\r\n\r\n";
 
-            _text += "// Character data offset from start of array (2 byte per character): \r\n";
+            //_text += "// Character data offset from start of array (2 byte per character): \r\n";
             string temp = string.Format("const __flash uint8_t {0:S}_index [{1:D}] = ", fontname, FontData.Indexes.Length * 2) + "{";
             _text += temp;
 
@@ -243,17 +243,7 @@ namespace FontConv
                 spaces += " ";
             }
 
-            for (int i = 0; i < FontData.Indexes.Length; i++)
-            {
-                _text += string.Format("0x{0:x2}, 0x{1:x2}, // {2:0} \"{3:S}\"  ", // 
-                                               (FontData.Indexes[i] & 0xFF00) >> 8,
-                                               FontData.Indexes[i] & 0xFF,
-                                               i,
-                                               Glyph.W1251ToUnicode(Convert.ToByte((i < 32) ? 32 : i))) + "\r\n" + spaces;
-            }
-            _text += "};\r\n\r\n";
-
-            _text += "// Character data: \r\n";
+            //_text += "// Character data: \r\n";
             temp = string.Format("const __flash uint8_t {0:S}_data [{1:D}] = ", fontname, FontData.Data.Count) + "{" + "\r\n" + "   ";
             _text += temp;
 
@@ -275,8 +265,18 @@ namespace FontConv
 
             _text += "};\r\n\r\n";
 
-            _text += "const sFontRec " + fontname + " = {" +
-                string.Format(" {0:d}, (uint8_t*){1:s}_index, (uint8_t*){1:s}_data, {2:d}, {3:d} ", FontData.TwoBit ? 2 : 1, fontname, FontData.Indexes.Length, FontData.MaxHeight) + "};";
+            for (int i = 0; i < FontData.Indexes.Length; i++)
+            {
+                _text += string.Format("0x{0:x2}, 0x{1:x2}, // {2:0} \"{3:S}\"  ", // 
+                                               (FontData.Indexes[i] & 0xFF00) >> 8,
+                                               FontData.Indexes[i] & 0xFF,
+                                               i,
+                                               Glyph.W1251ToUnicode(Convert.ToByte((i < 32) ? 32 : i))) + "\r\n" + spaces;
+            }
+            _text += "};\r\n\r\n";
+
+            //_text += "const sFontRec " + fontname + " = {" +
+            //    string.Format(" {0:d}, (uint8_t*){1:s}_index, (uint8_t*){1:s}_data, {2:d}, {3:d} ", FontData.TwoBit ? 2 : 1, fontname, FontData.Indexes.Length, FontData.MaxHeight) + "};";
 
             TextWriter tw = new StreamWriter(filename);
             tw.Write(_text);

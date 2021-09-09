@@ -206,8 +206,6 @@
             // ck2Bit
             // 
             this.ck2Bit.AutoSize = true;
-            this.ck2Bit.Checked = true;
-            this.ck2Bit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ck2Bit.Location = new System.Drawing.Point(241, 100);
             this.ck2Bit.Name = "ck2Bit";
             this.ck2Bit.Size = new System.Drawing.Size(81, 17);
@@ -257,6 +255,8 @@
             // ckDrop
             // 
             this.ckDrop.AutoSize = true;
+            this.ckDrop.Checked = true;
+            this.ckDrop.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckDrop.Location = new System.Drawing.Point(241, 119);
             this.ckDrop.Name = "ckDrop";
             this.ckDrop.Size = new System.Drawing.Size(125, 17);
