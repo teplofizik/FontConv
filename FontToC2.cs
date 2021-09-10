@@ -234,20 +234,12 @@ namespace FontConv
             //         Convert.ToString(FontData.MaxHeight) + "\r\n\r\n";
 
             //_text += "// Character data offset from start of array (2 byte per character): \r\n";
-            string temp = string.Format("const __flash uint8_t {0:S}_index [{1:D}] = ", fontname, FontData.Indexes.Length * 2) + "{";
+
+            //_text += "// Character data: \r\n";
+            string temp = string.Format("const __flash uint8_t {0:S}_data [{1:D}] = ", fontname, FontData.Data.Count) + "{" + "\r\n" + "   ";
             _text += temp;
 
             string spaces = "";
-            for (int i = 0; i < temp.Length; i++)
-            {
-                spaces += " ";
-            }
-
-            //_text += "// Character data: \r\n";
-            temp = string.Format("const __flash uint8_t {0:S}_data [{1:D}] = ", fontname, FontData.Data.Count) + "{" + "\r\n" + "   ";
-            _text += temp;
-
-            spaces = "";
             for (int i = 0; i < temp.Length; i++)
             {
                 spaces += " ";
@@ -264,6 +256,14 @@ namespace FontConv
                 Debug.WriteLine("Invalid write!");
 
             _text += "};\r\n\r\n";
+            temp = string.Format("const __flash uint8_t {0:S}_index [{1:D}] = ", fontname, FontData.Indexes.Length * 2) + "{";
+            _text += temp;
+
+            spaces = "";
+            for (int i = 0; i < temp.Length; i++)
+            {
+                spaces += " ";
+            }
 
             for (int i = 0; i < FontData.Indexes.Length; i++)
             {
