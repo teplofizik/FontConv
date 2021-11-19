@@ -278,7 +278,11 @@ namespace FontConv
             //_text += "const sFontRec " + fontname + " = {" +
             //    string.Format(" {0:d}, (uint8_t*){1:s}_index, (uint8_t*){1:s}_data, {2:d}, {3:d} ", FontData.TwoBit ? 2 : 1, fontname, FontData.Indexes.Length, FontData.MaxHeight) + "};";
 
-            TextWriter tw = new StreamWriter(filename);
+            if (File.Exists(filename))
+                File.Delete(filename);
+
+            TextWriter tw = new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write),
+                                             Encoding.GetEncoding(1251));
             tw.Write(_text);
             tw.Close();
         }

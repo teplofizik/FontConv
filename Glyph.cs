@@ -146,8 +146,8 @@ namespace FontConv
                 int calc_color = 0;
                 for (int y = 0; y < h; y++)
                 {
-                    Color color = bmp.GetPixel(w - counter - 1, y);
-                    calc_color += color.A;
+                    Color color = bmp.GetPixel(bmp.Width - counter - 1, y);
+                    calc_color += color.A > 30 ? 255 : 0;
                 }
                 if (calc_color != 0) // not empty line
                 {
@@ -165,6 +165,18 @@ namespace FontConv
 
             _LinesLeft = lines_left;
             _LinesRight = lines_right;
+
+            /*{
+                var b = new Bitmap(bmp);
+
+                for (int i = 0; i < lines_left; i++)
+                    b.SetPixel(i, 0, Color.Green);
+
+                for (int i = 0; i < lines_right; i++)
+                    b.SetPixel(b.Width - 1 - i, 0, Color.Red);
+
+                b.Save($"src/{_Char}.png");
+            }*/
         }
 
         public byte[] GetBitmapData(int SubBefore, int SubAfter)

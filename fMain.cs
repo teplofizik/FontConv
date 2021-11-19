@@ -69,8 +69,8 @@ namespace FontConv
 
             string sym = " ";
             {
-                if (chNumbers.Checked) sym += "0123456789" + ".=+-%";
-                if (chSpecial.Checked) sym += ".,():;\"" + "?!><%\\/°";
+                if (chNumbers.Checked) sym += "0123456789" + ",.=+-%°";
+                if (chSpecial.Checked) sym += ".,():;\"" + "?!><%\\/—";
 
                 if (chLatinBig.Checked) sym += "@ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 if (chLatinLittle.Checked) sym += "abcdefghijklmnopqrstuvwxyz";
